@@ -3,7 +3,7 @@ import asyncio
 import httpx
 import json
 
-from client import config
+import config
 
 
 def get_client():
