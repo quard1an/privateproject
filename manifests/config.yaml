@@ -1,0 +1,10 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: common-config
+data:
+  DEVELOP: "false"
+  CLUSTER_URLS: "http://app:8000/v1/group/"
+  CLIENT_TIMEOUT_SEC: "5"
+  CLIENT_MAX_CONNECTIONS: None
+  CLIENT_KEEPALIVE_CONNECTIONS: "10"

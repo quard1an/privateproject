@@ -59,5 +59,10 @@ async def get_group(groupId: str):
             detail="Object doesn't exist."
         )
 
+
+@app.get("/v1/group/", status_code=status.HTTP_200_OK)
+async def get_all_groups():
+    return group_set
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=int(os.getenv('NODE_PORT')))

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    name: client
+    kompose.cmd: kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: client
+  name: client
+spec:
+  selector:
+    matchLabels:
+      io.kompose.service: client
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: client
+        app: client
+        proj: nfticketize
+    spec:
+      containers:
+      - image: 'client_app:latest'
+        name: client
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: common-config
+        ports:
+        - containerPort: 8000
+        resources: {}
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8000
+            scheme: HTTP
+      imagePullSecrets:
+      - name: regcred
+      restartPolicy: Always
+status: {}

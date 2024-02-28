@@ -2,12 +2,14 @@ version: '3.8'
 
 services:
   node_app:
+    image: node_app
     build: ./app
     ports:
       - "8000:8000"
     networks:
       - local
   client_app:
+    image: client_app
     build: ./client
     depends_on:
       node_app:

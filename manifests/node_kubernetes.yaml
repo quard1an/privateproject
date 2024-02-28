@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    name: app
+    kompose.cmd: kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  selector:
+    matchLabels:
+      io.kompose.service: app
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.19.0 (f63a961c)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+        app: app
+        proj: nfticketize
+    spec:
+      containers:
+      - image: 'node_app:latest'
+        name: app
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: common-config
+        ports:
+        - containerPort: 8000
+        resources: {}
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8000
+            scheme: HTTP
+      imagePullSecrets:
+      - name: regcred
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.19.0 (f63a961c)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app-service
+    app: app
+  name: app
+spec:
+  type: NodePort
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+  selector:
+    app: app
