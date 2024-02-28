@@ -61,3 +61,13 @@ To run the tests, position yourself to the root folder and run:
 
 Individual tests (for the cluster or for the client) can be run with:
 `docker-compose run {app_name} pytest` eg `docker-compose run client_app pytest`
+
+
+## Kubernetes
+Firstly, create docker images with command `docker-compose build`
+
+After that apply kubernetes manifests with command `kubectl apply -f manifests/<<ALL_FILES_FROM_THE_FOLDER>>.yaml`
+
+To run a node, run the following command: `kubectl port-forward <<POD_NAME>> 8000:8000`
+
+And finally to run a client module, run the following command : `kubectl run client-app --rm -i --tty --image=client_app --image-pull-policy=Never -- python client/client.py`
